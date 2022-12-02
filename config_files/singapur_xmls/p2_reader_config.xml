@@ -1,0 +1,2090 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FMS_STRUCTURE date="20180630" manufacturer="Foobar Inc." version="1.0">
+<!--
+    Applies to: Jema.
+
+    A note on the Masats systems XMLs.
+
+    These are **handmade** XML files and may need revision, the catch
+    being that I have no means of validating them other than going
+    trough the original excel (over and over again, which is no regular
+    at all and contains embedded tables within its cells, distinctions on
+    subsystems are added as a comment —i.e. not systematically— and
+    must be checked on a one-by-one basis).
+
+    MASATS systems we monitor are (if values other than the ones
+    listed here are taken for TIPO_PUERTA and TIPO_RAMPA, panic!):
+
+    Tipo de puerta:
+    15: 028c, Puerta corredera de 2 hojas, control posición con encoder + FDC puerta cerrada
+    17: 028b, Puerta corredera de 1 hoja, control posición con encoder + FDC puerta cerrada
+    23: 029g, Puerta basculante de 2 hojas, control posición con FDC puerta cerrada
+
+    Tipo de  rampa:
+    10: RT1 - rampa eléctrica telescópica
+    15: RE1 - rampa eléctrica bajo suelo 
+
+    Thus the correspondences are:
+    029g: p1_reader_config.xml
+    028: p3_reader_config.xml, p3_reader_config.xml
+    RT1: rt1_reader_config.xml
+    RE1: re1_reader_config.xml
+
+    TMB files are p1_reader_config.xml, p2_reader_config.xml,
+    p3_reader_config.xml and rt1_reader_config.xml.
+
+    EMT files are p1_reader_config.xml, p2_reader_config.xml and
+    re1_reader_config.xml.
+
+    p2_reader_config.xml and p3_reader_config.xml are two distinct
+    files in spite of having the same parameters, since they monitor
+    different systems (single door and ramp attached door).
+
+    Ramp files re1_reader_config.xml and rt1_reader_config.xml have
+    slight differences (mainly in the pinout and error meaning).
+
+    Don't take this note as a DISCLAIMER, but as an acknoledgement 
+    of the limitations of the files by the author.
+-->
+  <IDENTIFIER description="ID_P2 stuff in CAN bus frame 0x18FCA200" frame="18FCA200" pgn="FCA2" priority="18" source="00">
+    <PARAMETER bit="1" byte="1" description="Tiempo comunicación activa (CAN activo con contacto) [segundos]" key="TIEMPO_COMUNICACION_ACTIVA" length="16"/>
+    <PARAMETER bit="1" byte="3" description="Número de maniobras ABRIR [ciclos]" key="NUMERO_MANIOBRAS_ABRIR" length="24"/>
+    <PARAMETER bit="1" byte="6" description="Número de maniobras CERRAR [ciclos]" key="NUMERO_MANIOBRAS_CERRAR" length="24"/>
+  </IDENTIFIER>
+  <IDENTIFIER description="ID_P2 stuff in CAN bus frame 0x18FCA201" frame="18FCA201" pgn="FCA2" priority="18" source="01">
+    <PARAMETER bit="1" byte="1" description="Tensión bateria al iniciar maniobra (VBAT)" key="VBAT_INICIAL" length="16" resolution="0.1"/>
+    <PARAMETER bit="1" byte="3" description="Tensión bateria mínima durante la maniobra (VBAT)" key="VBAT_MIN" length="16" resolution="0.1"/>
+    <PARAMETER bit="1" byte="5" description="Consumo pico motor 1 ABRIR Tramo A - Aceleración [I]" key="CONSUMO_PICO_MOTOR_1_ABRIR_TRAMO_A" length="16"/>
+    <PARAMETER bit="1" byte="7" description="Consumo medio motor 1 ABRIR Tramo A - Aceleración [I]" key="CONSUMO_MEDIO_MOTOR_1_ABRIR_TRAMO_A" length="16"/>
+  </IDENTIFIER>
+  <IDENTIFIER description="ID_P2 stuff in CAN bus frame 0x18FCA202" frame="18FCA202" pgn="FCA2" priority="18" source="02">
+    <PARAMETER bit="1" byte="1" description="Consumo pico motor 1 ABRIR Tramo V - Velocidad Rápida [I]" key="CONSUMO_PICO_MOTOR_1_ABRIR_TRAMO_V" length="16"/>
+    <PARAMETER bit="1" byte="3" description="Consumo medio motor 1 ABRIR Tramo V - Velocidad Rápida [I]" key="CONSUMO_MEDIO_MOTOR_1_ABRIR_TRAMO_V" length="16"/>
+    <PARAMETER bit="1" byte="5" description="Consumo pico motor 1 ABRIR Tramo L - Velocidad Lenta [I]" key="CONSUMO_PICO_MOTOR_1_ABRIR_TRAMO_L" length="16"/>
+    <PARAMETER bit="1" byte="7" description="Consumo medio motor 1 ABRIR Tramo L - Velocidad Lenta [I]" key="CONSUMO_MEDIO_MOTOR_1_ABRIR_TRAMO_L" length="16"/>
+  </IDENTIFIER>
+  <IDENTIFIER description="ID_P2 stuff in CAN bus frame 0x18FCA203" frame="18FCA203" pgn="FCA2" priority="18" source="03">
+    <PARAMETER bit="1" byte="1" description="Consumo pico motor 1 ABRIR Tramo F - Apretada [I]" key="CONSUMO_PICO_MOTOR_1_ABRIR_TRAMO_F" length="16"/>
+    <PARAMETER bit="1" byte="3" description="Consumo medio motor 1 ABRIR Tramo F - Apretada [I]" key="CONSUMO_MEDIO_MOTOR_1_ABRIR_TRAMO_F" length="16"/>
+    <PARAMETER bit="1" byte="5" description="Consumo pico motor 1 CERRAR Tramo A - Aceleración [I]" key="CONSUMO_PICO_MOTOR_1_CERRAR_TRAMO_A" length="16"/>
+    <PARAMETER bit="1" byte="7" description="Consumo medio motor 1 CERRAR Tramo A - Aceleración [I]" key="CONSUMO_MEDIO_MOTOR_1_CERRAR_TRAMO_A" length="16"/>
+  </IDENTIFIER>
+  <IDENTIFIER description="ID_P2 stuff in CAN bus frame 0x18FCA204" frame="18FCA204" pgn="FCA2" priority="18" source="04">
+    <PARAMETER bit="1" byte="1" description="Consumo pico motor 1 CERRAR Tramo V - Velocidad Rápida [I]" key="CONSUMO_PICO_MOTOR_1_CERRAR_TRAMO_V" length="16"/>
+    <PARAMETER bit="1" byte="3" description="Consumo medio motor 1 CERRAR Tramo V - Velocidad Rápida [I]" key="CONSUMO_MEDIO_MOTOR_1_CERRAR_TRAMO_V" length="16"/>
+    <PARAMETER bit="1" byte="5" description="Consumo pico motor 1 CERRAR Tramo L - Velocidad Lenta [I]" key="CONSUMO_PICO_MOTOR_1_CERRAR_TRAMO_L" length="16"/>
+    <PARAMETER bit="1" byte="7" description="Consumo medio motor 1 CERRAR Tramo L - Velocidad Lenta [I]" key="CONSUMO_MEDIO_MOTOR_1_CERRAR_TRAMO_L" length="16"/>
+  </IDENTIFIER>
+  <IDENTIFIER description="ID_P2 stuff in CAN bus frame 0x18FCA205" frame="18FCA205" pgn="FCA2" priority="18" source="05">
+    <PARAMETER bit="1" byte="1" description="Consumo pico motor 1 CERRAR Tramo F - Apretada [I]" key="CONSUMO_PICO_MOTOR_1_CERRAR_TRAMO_F" length="16"/>
+    <PARAMETER bit="1" byte="3" description="Consumo medio motor 1 CERRAR Tramo F - Apretada [I]" key="CONSUMO_MEDIO_MOTOR_1_CERRAR_TRAMO_F" length="16"/>
+    <PARAMETER bit="1" byte="5" description="Tiempo maniobra abrir [ms]" key="TIEMPO_MANIOBRA_MOTOR_1_ABRIR" length="16"/>
+    <PARAMETER bit="1" byte="7" description="Tiempo maniobra cerrar [ms]" key="TIEMPO_MANIOBRA_MOTOR_1_CERRAR" length="16"/>
+  </IDENTIFIER>
+  <IDENTIFIER description="ID_P2 stuff in CAN bus frame 0x18FCA20A" frame="18FCA20A" pgn="FCA2" priority="18" source="0A">
+    <!-- aux table is ENTRADAS_PUERTAS_INI -->
+    <PARAMETER bit="1" byte="5" description="Fotocélula" key="FOTOCELULA_INI" length="1"/>
+    <PARAMETER bit="2" byte="5" description="Pulsador local" key="PULSADOR_LOCAL_INI" length="1"/>
+    <PARAMETER bit="3" byte="5" description="Pulsador puerta en hoja" key="PULSADOR_PUERTA_EN_HOJA_INI" length="1"/>
+    <PARAMETER bit="4" byte="5" description="Puerta deshabilitada" key="PUERTA_DESHABILITADA_INI" length="1"/>
+    <PARAMETER bit="5" byte="5" description="Tacógrafo (V&lt;5km/h.)" key="TACOGRAFO_V_LT_5KMH_INI" length="1"/>
+    <PARAMETER bit="6" byte="5" description="Configuración dirección CAN 3" key="CONFIG_CAN_3_INI" length="1"/>
+    <PARAMETER bit="7" byte="5" description="Positivo contacto (+15)" key="POSITIVO_CONTACTO_INI" length="1"/>
+    <PARAMETER bit="8" byte="5" description="Puls. ext. (puerta: 1) - Puls. solicitud rampa en hoja (puertas: 2,3,4)" key="PULS_EXT_P1_SOLICITUD_RAMPA_HOJA_P2_3_4_INI" length="1"/>
+    <PARAMETER bit="1" byte="6" description="Borde sensible trasero" key="BORDE_SENSIBLE_TRASERO_INI" length="1"/>
+    <PARAMETER bit="2" byte="6" description="FDC puerta cerrada y bloqueada" key="FDC_PUERTA_CERRADA_BLOQUEADA_INI" length="1"/>
+    <PARAMETER bit="3" byte="6" description="FDC puerta en emergencia" key="FDC_PUERTA_EMERGENCIA_INI" length="1"/>
+    <PARAMETER bit="4" byte="6" description="Borde sensible delantero" key="BORDE_SENSIBLE_DELANTERO_INI" length="1"/>
+    <PARAMETER bit="5" byte="6" description="Configuración dirección CAN 1" key="CONFIG_CAN_1_INI" length="1"/>
+    <PARAMETER bit="6" byte="6" description="Configuración dirección CAN 2" key="CONFIG_CAN_2_INI" length="1"/>
+    <PARAMETER bit="7" byte="6" description="Sensor Hall hoja trasera - FDC hoja trasera abierta" key="FDC_HOJA_TRASERA_ABIERTA_INI" length="1"/>
+    <PARAMETER bit="8" byte="6" description="Sensor Hall hoja delantera - FDC hoja delantera abierta" key="FDC_HOJA_DELANTERA_ABIERTA_INI" length="1"/>
+    <!-- aux table is ENTRADAS_PUERTAS_FIN -->
+    <PARAMETER bit="1" byte="7" description="Fotocélula" key="FOTOCELULA_FIN" length="1"/>
+    <PARAMETER bit="2" byte="7" description="Pulsador local" key="PULSADOR_LOCAL_FIN" length="1"/>
+    <PARAMETER bit="3" byte="7" description="Pulsador puerta en hoja" key="PULSADOR_PUERTA_EN_HOJA_FIN" length="1"/>
+    <PARAMETER bit="4" byte="7" description="Puerta deshabilitada" key="PUERTA_DESHABILITADA_FIN" length="1"/>
+    <PARAMETER bit="5" byte="7" description="Tacógrafo (V&lt;5km/h.)" key="TACOGRAFO_V_LT_5KMH_FIN" length="1"/>
+    <PARAMETER bit="6" byte="7" description="Configuración dirección CAN 3" key="CONFIG_CAN_3_FIN" length="1"/>
+    <PARAMETER bit="7" byte="7" description="Positivo contacto (+15)" key="POSITIVO_CONTACTO_FIN" length="1"/>
+    <PARAMETER bit="8" byte="7" description="Puls. ext. (puerta: 1) - Puls. solicitud rampa en hoja (puertas: 2,3,4)" key="PULS_EXT_P1_SOLICITUD_RAMPA_HOJA_P2_3_4_FIN" length="1"/>
+    <PARAMETER bit="1" byte="8" description="Borde sensible trasero" key="BORDE_SENSIBLE_TRASERO_FIN" length="1"/>
+    <PARAMETER bit="2" byte="8" description="FDC puerta cerrada y bloqueada" key="FDC_PUERTA_CERRADA_BLOQUEADA_FIN" length="1"/>
+    <PARAMETER bit="3" byte="8" description="FDC puerta en emergencia" key="FDC_PUERTA_EMERGENCIA_FIN" length="1"/>
+    <PARAMETER bit="4" byte="8" description="Borde sensible delantero" key="BORDE_SENSIBLE_DELANTERO_FIN" length="1"/>
+    <PARAMETER bit="5" byte="8" description="Configuración dirección CAN 1" key="CONFIG_CAN_1_FIN" length="1"/>
+    <PARAMETER bit="6" byte="8" description="Configuración dirección CAN 2" key="CONFIG_CAN_2_FIN" length="1"/>
+    <PARAMETER bit="7" byte="8" description="Sensor Hall hoja trasera - FDC hoja trasera abierta" key="FDC_HOJA_TRASERA_ABIERTA_FIN" length="1"/>
+    <PARAMETER bit="8" byte="8" description="Sensor Hall hoja delantera - FDC hoja delantera abierta" key="FDC_HOJA_DELANTERA_ABIERTA_FIN" length="1"/>
+  </IDENTIFIER>
+  <IDENTIFIER description="ID_P2 stuff in CAN bus frame 0x18FCA20B" frame="18FCA20B" pgn="FCA2" priority="18" source="0B">
+    <!-- aux table is SALIDAS_PUERTAS_INI -->
+    <PARAMETER bit="1" byte="1" description="18J21, Alimentación sensores Hall (6V)" key="ALIMENTACION_SENSORES_HALL_6V_INI" length="1"/>
+    <PARAMETER bit="2" byte="1" description="17J21, Zumbador" key="ZUMBADOR_INI" length="1"/>
+    <PARAMETER bit="3" byte="1" description="18J21, Alimentación sensores Hall (6V)" key="ALIMENTACION_SENSORES_HALL_6V_INI" length="1"/>
+    <PARAMETER bit="4" byte="1" description="5J15, Bloqueo freno vehículo" key="BLOQUEO_FRENO_VEHICULO_INI" length="1"/>
+    <PARAMETER bit="5" byte="1" description="7J15, Rearme emergencia" key="REARME_EMERGENCIA_INI" length="1"/>
+    <PARAMETER bit="6" byte="1" description="8J15, Deshabilitar emerg. int. (V&gt;5km/h.)" key="DESHABILITAR_EMERG_INT_V_GT_5KMH_INI" length="1"/>
+    <PARAMETER bit="7" byte="1" description="10J15, Iluminación puls. int. emerg." key="ILUMINACION_PULS_INT_EMERG_INI" length="1"/>
+    <PARAMETER bit="8" byte="1" description="11J15+, Luz estribo" key="LUZ_ESTRIBO_INI" length="1"/>
+    <PARAMETER bit="1" byte="2" description="1J15+, Bloq. emerg. ext. - estacionamiento" key="BLOQ_EMERG_EXT_ESTACIONAMIENTO_INI" length="1"/>
+    <PARAMETER bit="2" byte="2" description="4J15+, Iluminación pulsador hoja" key="ILUMINACION_PULSADOR_HOJA_INI" length="1"/>
+    <PARAMETER bit="3" byte="2" description="1J15-, Bloq. emerg. ext. - estacionamiento" key="BLOQ_EMERG_EXT_ESTACIONAMIENTO_INI" length="1"/>
+    <PARAMETER bit="4" byte="2" description="4J15-, Iluminación pulsador hoja" key="ILUMINACION_PULSADOR_HOJA_INI" length="1"/>
+    <PARAMETER bit="5" byte="2" description="11J15-, Luz estribo" key="LUZ_ESTRIBO_INI" length="1"/>
+    <PARAMETER bit="8" byte="2" description="10J21-13J21, Freno motor puerta deslizante, desbloquear puerta basculante" key="FRENO_MOTOR_PUERTA_DESLIZANTE_DESBLOQUEAR_PUERTA_BASCULANTE_INI" length="1"/>
+    <!-- aux table is SALIDAS_PUERTAS_FIN -->
+    <PARAMETER bit="1" byte="3" description="18J21, Alimentación sensores Hall (6V)" key="ALIMENTACION_SENSORES_HALL_6V_FIN" length="1"/>
+    <PARAMETER bit="2" byte="3" description="17J21, Zumbador" key="ZUMBADOR_FIN" length="1"/>
+    <PARAMETER bit="3" byte="3" description="18J21,Alimentación sensores Hall (6V)" key="ALIMENTACION_SENSORES_HALL_6V_FIN" length="1"/>
+    <PARAMETER bit="4" byte="3" description="5J15, Bloqueo freno vehículo" key="BLOQUEO_FRENO_VEHICULO_FIN" length="1"/>
+    <PARAMETER bit="5" byte="3" description="7J15, Rearme emergencia" key="REARME_EMERGENCIA_FIN" length="1"/>
+    <PARAMETER bit="6" byte="3" description="8J15, Deshabilitar emerg. int. (V&gt;5km/h.)" key="DESHABILITAR_EMERG_INT_V_GT_5KMH_FIN" length="1"/>
+    <PARAMETER bit="7" byte="3" description="10J15, Iluminación puls. int. emerg." key="ILUMINACION_PULS_INT_EMERG_FIN" length="1"/>
+    <PARAMETER bit="8" byte="3" description="11J15+, Luz estribo" key="LUZ_ESTRIBO_FIN" length="1"/>
+    <PARAMETER bit="1" byte="4" description="1J15+, Bloq. emerg. ext. - estacionamiento" key="BLOQ_EMERG_EXT_ESTACIONAMIENTO_FIN" length="1"/>
+    <PARAMETER bit="2" byte="4" description="4J15+, Iluminación pulsador hoja" key="ILUMINACION_PULSADOR_HOJA_FIN" length="1"/>
+    <PARAMETER bit="3" byte="4" description="1J15-, Bloq. emerg. ext. - estacionamiento" key="BLOQ_EMERG_EXT_ESTACIONAMIENTO_FIN" length="1"/>
+    <PARAMETER bit="4" byte="4" description="4J15-, Iluminación pulsador hoja" key="ILUMINACION_PULSADOR_HOJA_FIN" length="1"/>
+    <PARAMETER bit="5" byte="4" description="11J15-, Luz estribo" key="LUZ_ESTRIBO_FIN" length="1"/>
+    <PARAMETER bit="8" byte="4" description="10J21-13J21, Freno motor puerta deslizante, desbloquear puerta basculante" key="FRENO_MOTOR_PUERTA_DESLIZANTE_DESBLOQUEAR_PUERTA_BASCULANTE_FIN" length="1"/>
+    <!-- pulsos encoder -->
+    <PARAMETER bit="1" byte="5" description="Pulsos Encoder Motor 1" key="PULSOS_ENCODER_MOTOR_1_INICIO" length="16"/>
+    <PARAMETER bit="1" byte="7" description="Pulsos Encoder Motor 1" key="PULSOS_ENCODER_MOTOR_1_FINAL" length="16"/>
+  </IDENTIFIER>
+  <IDENTIFIER description="ID_P2 stuff in CAN bus frame 0x18FCA20C" frame="18FCA20C" pgn="FCA2" priority="18" source="0C">
+    <!-- aux table is RAZON_ORIGEN_MANIOBRA -->
+    <PARAMETER bit="1" byte="5" description="V_LT_3KMH" key="V_LT_3KMH" length="1"/>
+    <PARAMETER bit="2" byte="5" description="ANULACIÓN_HOJA" key="ANULACION_HOJA" length="1"/>
+    <PARAMETER bit="3" byte="5" description="PULSADOR_ABRIRCERRAR" key="PULSADOR_ABRIRCERRAR" length="1"/>
+    <PARAMETER bit="4" byte="5" description="REARME" key="REARME" length="1"/>
+    <PARAMETER bit="5" byte="5" description="ANULACIÓN_EMERGENCIA" key="ANULACION_EMERGENCIA" length="1"/>
+    <PARAMETER bit="6" byte="5" description="BLOQUEAR_EMERG_EXT" key="BLOQUEAR_EMERG_EXT" length="1"/>
+    <PARAMETER bit="7" byte="5" description="DESBLOQUEAR_EMERG_EXT" key="DESBLOQUEAR_EMERG_EXT" length="1"/>
+    <PARAMETER bit="8" byte="5" description="PULSADOR_ABRIR" key="PULSADOR_ABRIR" length="1"/>
+    <PARAMETER bit="1" byte="6" description="PULSADOR_CERRAR" key="PULSADOR_CERRAR" length="1"/>
+    <PARAMETER bit="2" byte="6" description="APERTURA_PARCIAL_DOBLE_MOVIMIENTO_SALIDA_RAMPA" key="APERTURA_PARCIAL_DOBLE_MOVIMIENTO_SALIDA_RAMPA" length="1"/>
+    <PARAMETER bit="3" byte="6" description="APERTURA_PARCIAL_DOBLE_MOVIMIENTO_ENTRADA_RAMPA" key="APERTURA_PARCIAL_DOBLE_MOVIMIENTO_ENTRADA_RAMPA" length="1"/>
+    <PARAMETER bit="4" byte="6" description="HABILITACIÓN_PUERTA" key="HABILITACION_PUERTA" length="1"/>
+    <PARAMETER bit="5" byte="6" description="MODO_LANZADERA" key="MODO_LANZADERA" length="1"/>
+    <PARAMETER bit="6" byte="6" description="PARADA_SOLICITADA" key="PARADA_SOLICITADA" length="1"/>
+    <PARAMETER bit="7" byte="6" description="SOLICITUD_CARRITO" key="SOLICITUD_CARRITO" length="1"/>
+    <PARAMETER bit="8" byte="6" description="MANDO_CENTRAL_SEGURIDAD" key="MANDO_CENTRAL_SEGURIDAD" length="1"/>
+    <PARAMETER bit="1" byte="7" description="ABRIR_PUERTA_MOVIMENTO_RAMPA" key="ABRIR_PUERTA_MOVIMENTO_RAMPA" length="1"/>
+    <PARAMETER bit="2" byte="7" description="CERRAR_PUERTA_MOVIMENTO_RAMPA" key="CERRAR_PUERTA_MOVIMENTO_RAMPA" length="1"/>
+    <PARAMETER bit="3" byte="7" description="MOVIMIENTO_PARCIAL_DE_RAMPA" key="MOVIMIENTO_PARCIAL_DE_RAMPA" length="1"/>
+    <!-- handmade ERRORS table 😭 -->
+    <PARAMETER bit="1" byte="8" description="Byte 7 Bit 0: Fotocelula" key="FOTOCELULA" length="1"/>
+	<PARAMETER bit="3" byte="8" description="Byte 7 Bit 2: Motor 1 open consumption" key="CONSUMO_MOTOR_ABRIR_1" length="1"/>
+	<PARAMETER bit="4" byte="8" description="Byte 7 Bit 3: Motor 2 open consumption" key="CONSUMO_MOTOR_ABRIR_2" length="1"/>
+    <PARAMETER bit="5" byte="8" description="Byte 7 Bit 4: Consumo motor 1 cerrar" key="CONSUMO_MOTOR_1" length="1"/>
+    <PARAMETER bit="6" byte="8" description="Byte 7 Bit 5: Consumo motor 2 cerrar" key="CONSUMO_MOTOR_2" length="1"/>
+    <PARAMETER bit="7" byte="8" description="Byte 7 Bit 6: Borde Trasero cerrar" key="BORDE_TRASERO_CERRAR" length="1"/>
+    <PARAMETER bit="8" byte="8" description="Byte 7 Bit 7: Borde Delantero cerrar" key="BORDE_DELANTERO_CERRAR" length="1"/>
+  </IDENTIFIER>
+  <IDENTIFIER description="ID_P2 stuff in CAN bus frame 0x18FCA20D" frame="18FCA20D" pgn="FCA2" priority="18" source="0D">
+    <!-- handmade ERRORS table 😭 -->
+	<PARAMETER bit="1" byte="1" description="Byte 0 Bit 0: Rear motor brake NC" key="FRENO_MOTOR_TRASERO_NC" length="1"/>
+    <PARAMETER bit="2" byte="1" description="Byte 0 Bit 1: MCS NC" key="MCS_NC" length="1"/>
+	<PARAMETER bit="3" byte="1" description="Byte 0 Bit 2: Switch supply NC" key="ALIMENTACION_MICROS_NC" length="1"/>
+	<PARAMETER bit="4" byte="1" description="Byte 0 Bit 3: Door available for service NC" key="PUERTA_EN_SERVICIO_NC" length="1"/>
+	<PARAMETER bit="5" byte="1" description="Byte 0 Bit 4: Internal CAN Timeout" key="INTERNAL_CAN_TIMEOUT" length="1"/>
+	<PARAMETER bit="6" byte="1" description="Byte 0 Bit 5: Master CAN Timeout" key="MASTER_CAN_TIMOUT" length="1"/>
+	<PARAMETER bit="7" byte="1" description="Byte 0 Bit 6: Door not enabled by parking brake" key="PUERTA_NO_HABILITADA_FRENO_PARKING" length="1"/>
+	<PARAMETER bit="1" byte="2" description="Byte 1 Bit 0: Door not enabled by SW" key="TACOGRAFO" length="1"/>
+	<PARAMETER bit="2" byte="2" description="Byte 1 Bit 1: Door not enabled by HW" key="PUERTA_NO_HABILITADA_HW" length="1"/>
+	<PARAMETER bit="4" byte="2" description="Byte 1 Bit 3: No air presure vehicle" key="SIN_PRESION_AIRE" length="1"/>
+	<PARAMETER bit="5" byte="2" description="Byte 1 Bit 4: Door not enabled by door locked" key="NO_HABILITADA_POR_PUERTA_BLOQUEADA" length="1"/>
+    <PARAMETER bit="6" byte="2" description="Byte 1 Bit 5: Door not enabled by ramp out" key="NO_HABILITADA_POR_RAMPA_FUERA" length="1"/>
+	<PARAMETER bit="7" byte="2" description="Byte 1 Bit 6: Door not enabled by door disabled" key="NO_HABILITADA_POR_PUERTA_DESHABILITADA" length="1"/>
+	<PARAMETER bit="8" byte="2" description="Byte 1 Bit 7: Door not enabled by emergency" key="EMERGENCIA" length="1"/>
+    <PARAMETER bit="4" byte="3" description="Byte 2 Bit 3: Closed SW door open M1" key="FDC_DELANTERA_PUERTA_CERRADA_ABIERTO" length="1"/>
+	<PARAMETER bit="5" byte="3" description="Byte 2 Bit 4: Closed SW door open M2" key="FDC_TRASERA_PUERTA_CERRADA_ABIERTO" length="1"/>
+    <PARAMETER bit="6" byte="3" description="Byte 2 Bit 5: Open SW door closed M1" key="FDC_DELANTERA_PUERTA_ABIERTA_CERRADO" length="1"/>
+    <PARAMETER bit="7" byte="3" description="Byte 2 Bit 6: Open SW door closed M2" key="FDC_TRASERA_PUERTA_ABIERTA_CERRADO" length="1"/>
+	<PARAMETER bit="1" byte="4" description="Byte 3 Bit 0: No ignition + enabled by SW" key="SIN_CONTACTO_HABILITADA_POR_SW" length="1"/>
+    <PARAMETER bit="6" byte="4" description="Byte 3 Bit 5: Supply too low" key="ALIMENTACION" length="1"/>
+    <PARAMETER bit="8" byte="4" description="Byte 3 Bit 7: Supply too high" key="SOBREALIMENTACION" length="1"/>
+	<PARAMETER bit="1" byte="5" description="Byte 4 Bit 0: Encoder Supply SC" key="ALIMENTACION_ENCODER_SC" length="1"/>
+    <PARAMETER bit="2" byte="5" description="Byte 4 Bit 1: MSC SC" key="MSC_SC" length="1"/>
+    <PARAMETER bit="3" byte="5" description="Byte 4 Bit 2: Rear motor brake SC" key="FRENO_MOTOR_TRASERO_SC" length="1"/>
+	<PARAMETER bit="4" byte="5" description="Byte 4 Bit 3: Sensor supply SC" key="ALIMENTACION_MICROS_SC" length="1"/>
+    <PARAMETER bit="5" byte="5" description="Byte 4 Bit 4: Door available for service SC" key="PUERTA_EN_SERVICIO_SC" length="1"/>
+	<PARAMETER bit="6" byte="5" description="Byte 4 Bit 5: Disable exterior emergency SC" key="ANULACION_EMERGENCIA_EXTERIOR_SC" length="1"/>
+	<PARAMETER bit="7" byte="5" description="Byte 4 Bit 6: Interior emergency light SC" key="INTERIOR_EMERGENCY_LIGHT_SC" length="1"/>
+	<PARAMETER bit="8" byte="5" description="Byte 4 Bit 7: Step light SC" key="STEP_LIGHT_SC" length="1"/>
+	<PARAMETER bit="1" byte="6" description="Byte 5 Bit 0: Buzzer SC" key="ZUMBADOR_SC" length="1"/>
+	<PARAMETER bit="2" byte="6" description="Byte 5 Bit 1: Maneuver warning light SC" key="WARNING_LIGHT_SC" length="1"/>
+	<PARAMETER bit="3" byte="6" description="Byte 5 Bit 2: Interior leaf pb light SC" key="LUZ_PULSADOR_INTERIOR_SC" length="1"/>
+	<PARAMETER bit="5" byte="6" description="Byte 5 Bit 4: Front motor HW error" key="ERROR_MOTOR_DELANTERO" length="1"/>
+	<PARAMETER bit="6" byte="6" description="Byte 5 Bit 5: Rear motor HW error" key="ERROR_MOTOR_TRASERO" length="1"/>
+	<PARAMETER bit="7" byte="6" description="Byte 5 Bit 6: Exterior leaf pb SC" key="PULSADOR_EXTERIOR_HOJA_SC" length="1"/>
+	<PARAMETER bit="1" byte="7" description="Byte 6 Bit 0: Front motor SC" key="CC_MOTOR_HD_MOTOR_D" length="1"/>
+    <PARAMETER bit="2" byte="7" description="Byte 6 Bit 1: Rear motor SC" key="CC_MOTOR_T" length="1"/>
+	<PARAMETER bit="3" byte="7" description="Byte 6 Bit 2: Door open Vbat SC" key="PUERTA_ABIERTA_VBAT_SC" length="1"/>
+	<PARAMETER bit="4" byte="7" description="Byte 6 Bit 3: Parking Brake SC" key="PARKING_BRAKE_SC" length="1"/>
+	<PARAMETER bit="5" byte="7" description="Byte 6 Bit 4: Door open GND SC" key="GND_PUERTA_ABIERTA_SC" length="1"/>
+	<PARAMETER bit="6" byte="7" description="Byte 6 Bit 5: Reset emeergency valve SC" key="VALVULA_REARME_SC" length="1"/>
+    <PARAMETER bit="7" byte="7" description="Byte 6 Bit 6: Disable interior emergency SC" key="ANULACION_EMERGENCIA_INTERIOR_SC" length="1"/>
+	<PARAMETER bit="8" byte="7" description="Byte 6 Bit 7: Front motor brake SC" key="FRENO_MOTOR_DELANTERO_SC" length="1"/>
+	<PARAMETER bit="1" byte="8" description="Byte 7 Bit 0: Motor 1 NC" key="MOTOR_1_NC" length="1"/>
+	<PARAMETER bit="2" byte="8" description="Byte 7 Bit 1: Front sense edge NC" key="BORDE_D_CERRAR" length="1"/>
+    <PARAMETER bit="3" byte="8" description="Byte 7 Bit 2: Motor 2 NC" key="MOTOR_2_NC" length="1"/>
+	<PARAMETER bit="4" byte="8" description="Byte 7 Bit 3: Rear sense edge NC" key="BORDE_T_CERRAR" length="1"/>
+	<PARAMETER bit="5" byte="8" description="Byte 7 Bit 4: Reset emergency valve NC" key="VALVULA_REARME_NC" length="1"/>
+	<PARAMETER bit="6" byte="8" description="Byte 7 Bit 5: Disable emergency NC" key="ANULACION_EMERGENCIA_NC" length="1"/>
+	<PARAMETER bit="7" byte="8" description="Byte 7 Bit 6: Front motor brake NC" key="FRENO_MOTOR_DELANTERO_NC" length="1"/>
+	<PARAMETER bit="8" byte="8" description="Byte 7 Bit 7: Encoder supply NC" key="ALIMENTACION_ENCODER_NC" length="1"/>
+  </IDENTIFIER>
+  <IDENTIFIER description="ID_P2 stuff in CAN bus frame 0x18FCA20E" frame="18FCA20E" pgn="FCA2" priority="18" source="0E">
+    <PARAMETER bit="1" byte="4" description="Mirar Ficha “TIPOS_PUERTA”" key="TIPO_PUERTA" length="8"/>
+    <PARAMETER bit="1" byte="5" description="Estado del contacto del vehículo" key="CONTACTO_ON_OFF" length="2"/>
+    <PARAMETER bit="4" byte="5" key="FLAG_FIN_TRAMAS" length="1" description="Flag fin de muestras puerta "/>
+    <!-- handmade ERRORS table 😭 -->
+    <PARAMETER bit="2" byte="1" description="Byte 0 Bit 1: Rear motor encoder NC" key="ENCODER_TRASERO_NC" length="1"/>
+    <PARAMETER bit="3" byte="1" description="Byte 0 Bit 2: Front motor encoder reversed" key="ENCODER_DELANTERO_INVERTIDO" length="1"/>
+    <PARAMETER bit="4" byte="1" description="Byte 0 Bit 3: Rear motor encoder reversed" key="ENCODER_TRASERO_INVERTIDO" length="1"/>
+    <PARAMETER bit="5" byte="1" description="Byte 0 Bit 4: Front motor voltage drop" key="CAIDA_VOLTAJE_MOTOR_DELANTERO" length="1"/>
+    <PARAMETER bit="6" byte="1" description="Byte 0 Bit 5: Rear motor voltage drop" key="CAIDA_VOLTAJE_MOTOR_TRASERO" length="1"/>
+    <PARAMETER bit="7" byte="1" description="Byte 0 Bit 6: Front motor teaching error" key="ERROR_TEACHING_MOTOR_DELANTERO" length="1"/>
+    <PARAMETER bit="8" byte="1" description="Byte 0 Bit 7: Rear motor teaching error" key="ERROR_TEACHING_MOTOR_TRASERO" length="1"/>
+    <PARAMETER bit="8" byte="1" description="Byte 0 Bit 7: Rear motor teaching error" key="ERROR_TEACHING_MOTOR_TRASERO" length="1"/>
+	<PARAMETER bit="2" byte="2" description="Byte 1 Bit 1: Rear leaf max time maneuver" key="TIEMPO_EXCESIVO_HOJA_TRASERA" length="1"/>
+	<PARAMETER bit="3" byte="2" description="Byte 1 Bit 2: Front motor encoder NC" key="ENCODER_DELANTERO_NC" length="1"/>
+	<PARAMETER bit="4" byte="2" description="Byte 1 Bit 3: Front leaf max time manouver" key="TIEMPO_EXCESIVO_HOJA_DELANTERA" length="1"/>
+   </IDENTIFIER>
+   
+   <IDENTIFIER description="ID_P2 stuff in CAN bus frame 0x18FCA20E" frame="18FCA20E" pgn="FCA2" priority="18" source="0E">
+	     <PARAMETER bit="1" byte="3" description="Abrir: 10 Cerrar: 01" key="ABRIR_CERRAR" length="2"/>
+	</IDENTIFIER>
+<!-- tramas iniciales -->
+
+    <IDENTIFIER description="ID_p2 stuff in CAN bus frame 0x18FCA220" frame="18FCA220" pgn="FCA2" priority="18" source="20">
+      <PARAMETER bit="1" byte="1" description="número de muestras del consumo del motor 1" key="muestras_motor_1" length="16"/>
+      <PARAMETER bit="1" byte="3" description="número de muestras del consumo del motor 2" key="muestras_motor_2" length="16"/>
+    </IDENTIFIER>
+
+<!-- ... -->
+
+    <!-- muestras p2 m1 -->
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC200" frame="18FCC200" pgn="FCC2" priority="18" source="00">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0000" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0001" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0002" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0003" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC201" frame="18FCC201" pgn="FCC2" priority="18" source="01">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0004" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0005" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0006" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0007" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC202" frame="18FCC202" pgn="FCC2" priority="18" source="02">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0008" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0009" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0010" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0011" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC203" frame="18FCC203" pgn="FCC2" priority="18" source="03">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0012" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0013" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0014" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0015" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC204" frame="18FCC204" pgn="FCC2" priority="18" source="04">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0016" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0017" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0018" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0019" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC205" frame="18FCC205" pgn="FCC2" priority="18" source="05">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0020" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0021" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0022" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0023" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC206" frame="18FCC206" pgn="FCC2" priority="18" source="06">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0024" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0025" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0026" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0027" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC207" frame="18FCC207" pgn="FCC2" priority="18" source="07">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0028" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0029" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0030" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0031" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC208" frame="18FCC208" pgn="FCC2" priority="18" source="08">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0032" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0033" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0034" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0035" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC209" frame="18FCC209" pgn="FCC2" priority="18" source="09">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0036" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0037" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0038" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0039" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC20A" frame="18FCC20A" pgn="FCC2" priority="18" source="0A">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0040" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0041" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0042" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0043" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC20B" frame="18FCC20B" pgn="FCC2" priority="18" source="0B">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0044" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0045" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0046" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0047" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC20C" frame="18FCC20C" pgn="FCC2" priority="18" source="0C">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0048" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0049" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0050" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0051" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC20D" frame="18FCC20D" pgn="FCC2" priority="18" source="0D">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0052" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0053" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0054" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0055" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC20E" frame="18FCC20E" pgn="FCC2" priority="18" source="0E">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0056" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0057" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0058" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0059" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC20F" frame="18FCC20F" pgn="FCC2" priority="18" source="0F">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0060" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0061" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0062" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0063" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC210" frame="18FCC210" pgn="FCC2" priority="18" source="10">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0064" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0065" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0066" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0067" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC211" frame="18FCC211" pgn="FCC2" priority="18" source="11">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0068" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0069" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0070" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0071" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC212" frame="18FCC212" pgn="FCC2" priority="18" source="12">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0072" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0073" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0074" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0075" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC213" frame="18FCC213" pgn="FCC2" priority="18" source="13">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0076" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0077" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0078" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0079" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC214" frame="18FCC214" pgn="FCC2" priority="18" source="14">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0080" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0081" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0082" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0083" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC215" frame="18FCC215" pgn="FCC2" priority="18" source="15">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0084" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0085" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0086" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0087" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC216" frame="18FCC216" pgn="FCC2" priority="18" source="16">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0088" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0089" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0090" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0091" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC217" frame="18FCC217" pgn="FCC2" priority="18" source="17">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0092" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0093" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0094" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0095" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC218" frame="18FCC218" pgn="FCC2" priority="18" source="18">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0096" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0097" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0098" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0099" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC219" frame="18FCC219" pgn="FCC2" priority="18" source="19">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0100" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0101" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0102" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0103" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC21A" frame="18FCC21A" pgn="FCC2" priority="18" source="1A">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0104" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0105" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0106" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0107" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC21B" frame="18FCC21B" pgn="FCC2" priority="18" source="1B">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0108" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0109" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0110" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0111" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC21C" frame="18FCC21C" pgn="FCC2" priority="18" source="1C">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0112" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0113" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0114" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0115" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC21D" frame="18FCC21D" pgn="FCC2" priority="18" source="1D">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0116" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0117" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0118" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0119" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC21E" frame="18FCC21E" pgn="FCC2" priority="18" source="1E">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0120" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0121" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0122" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0123" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC21F" frame="18FCC21F" pgn="FCC2" priority="18" source="1F">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0124" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0125" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0126" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0127" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC220" frame="18FCC220" pgn="FCC2" priority="18" source="20">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0128" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0129" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0130" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0131" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC221" frame="18FCC221" pgn="FCC2" priority="18" source="21">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0132" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0133" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0134" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0135" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC222" frame="18FCC222" pgn="FCC2" priority="18" source="22">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0136" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0137" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0138" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0139" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC223" frame="18FCC223" pgn="FCC2" priority="18" source="23">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0140" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0141" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0142" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0143" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC224" frame="18FCC224" pgn="FCC2" priority="18" source="24">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0144" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0145" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0146" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0147" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC225" frame="18FCC225" pgn="FCC2" priority="18" source="25">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0148" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0149" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0150" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0151" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC226" frame="18FCC226" pgn="FCC2" priority="18" source="26">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0152" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0153" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0154" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0155" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC227" frame="18FCC227" pgn="FCC2" priority="18" source="27">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0156" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0157" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0158" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0159" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC228" frame="18FCC228" pgn="FCC2" priority="18" source="28">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0160" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0161" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0162" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0163" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC229" frame="18FCC229" pgn="FCC2" priority="18" source="29">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0164" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0165" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0166" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0167" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC22A" frame="18FCC22A" pgn="FCC2" priority="18" source="2A">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0168" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0169" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0170" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0171" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC22B" frame="18FCC22B" pgn="FCC2" priority="18" source="2B">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0172" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0173" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0174" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0175" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC22C" frame="18FCC22C" pgn="FCC2" priority="18" source="2C">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0176" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0177" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0178" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0179" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC22D" frame="18FCC22D" pgn="FCC2" priority="18" source="2D">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0180" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0181" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0182" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0183" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC22E" frame="18FCC22E" pgn="FCC2" priority="18" source="2E">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0184" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0185" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0186" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0187" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC22F" frame="18FCC22F" pgn="FCC2" priority="18" source="2F">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0188" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0189" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0190" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0191" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC230" frame="18FCC230" pgn="FCC2" priority="18" source="30">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0192" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0193" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0194" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0195" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC231" frame="18FCC231" pgn="FCC2" priority="18" source="31">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0196" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0197" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0198" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0199" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC232" frame="18FCC232" pgn="FCC2" priority="18" source="32">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0200" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0201" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0202" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0203" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC233" frame="18FCC233" pgn="FCC2" priority="18" source="33">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0204" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0205" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0206" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0207" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC234" frame="18FCC234" pgn="FCC2" priority="18" source="34">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0208" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0209" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0210" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0211" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC235" frame="18FCC235" pgn="FCC2" priority="18" source="35">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0212" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0213" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0214" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0215" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC236" frame="18FCC236" pgn="FCC2" priority="18" source="36">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0216" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0217" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0218" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0219" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC237" frame="18FCC237" pgn="FCC2" priority="18" source="37">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0220" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0221" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0222" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0223" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC238" frame="18FCC238" pgn="FCC2" priority="18" source="38">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0224" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0225" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0226" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0227" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC239" frame="18FCC239" pgn="FCC2" priority="18" source="39">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0228" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0229" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0230" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0231" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC23A" frame="18FCC23A" pgn="FCC2" priority="18" source="3A">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0232" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0233" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0234" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0235" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC23B" frame="18FCC23B" pgn="FCC2" priority="18" source="3B">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0236" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0237" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0238" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0239" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC23C" frame="18FCC23C" pgn="FCC2" priority="18" source="3C">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0240" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0241" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0242" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0243" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC23D" frame="18FCC23D" pgn="FCC2" priority="18" source="3D">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0244" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0245" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0246" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0247" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC23E" frame="18FCC23E" pgn="FCC2" priority="18" source="3E">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0248" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0249" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0250" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0251" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC23F" frame="18FCC23F" pgn="FCC2" priority="18" source="3F">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0252" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0253" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0254" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0255" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC240" frame="18FCC240" pgn="FCC2" priority="18" source="40">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0256" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0257" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0258" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0259" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC241" frame="18FCC241" pgn="FCC2" priority="18" source="41">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0260" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0261" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0262" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0263" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC242" frame="18FCC242" pgn="FCC2" priority="18" source="42">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0264" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0265" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0266" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0267" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC243" frame="18FCC243" pgn="FCC2" priority="18" source="43">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0268" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0269" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0270" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0271" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC244" frame="18FCC244" pgn="FCC2" priority="18" source="44">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0272" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0273" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0274" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0275" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC245" frame="18FCC245" pgn="FCC2" priority="18" source="45">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0276" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0277" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0278" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0279" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC246" frame="18FCC246" pgn="FCC2" priority="18" source="46">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0280" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0281" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0282" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0283" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC247" frame="18FCC247" pgn="FCC2" priority="18" source="47">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0284" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0285" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0286" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0287" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC248" frame="18FCC248" pgn="FCC2" priority="18" source="48">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0288" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0289" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0290" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0291" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC249" frame="18FCC249" pgn="FCC2" priority="18" source="49">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0292" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0293" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0294" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0295" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC24A" frame="18FCC24A" pgn="FCC2" priority="18" source="4A">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0296" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0297" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0298" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0299" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC24B" frame="18FCC24B" pgn="FCC2" priority="18" source="4B">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0300" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0301" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0302" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0303" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC24C" frame="18FCC24C" pgn="FCC2" priority="18" source="4C">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0304" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0305" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0306" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0307" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC24D" frame="18FCC24D" pgn="FCC2" priority="18" source="4D">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0308" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0309" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0310" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0311" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC24E" frame="18FCC24E" pgn="FCC2" priority="18" source="4E">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0312" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0313" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0314" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0315" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC24F" frame="18FCC24F" pgn="FCC2" priority="18" source="4F">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0316" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0317" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0318" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0319" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC250" frame="18FCC250" pgn="FCC2" priority="18" source="50">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0320" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0321" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0322" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0323" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC251" frame="18FCC251" pgn="FCC2" priority="18" source="51">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0324" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0325" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0326" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0327" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC252" frame="18FCC252" pgn="FCC2" priority="18" source="52">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0328" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0329" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0330" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0331" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC253" frame="18FCC253" pgn="FCC2" priority="18" source="53">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0332" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0333" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0334" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0335" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC254" frame="18FCC254" pgn="FCC2" priority="18" source="54">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0336" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0337" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0338" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0339" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC255" frame="18FCC255" pgn="FCC2" priority="18" source="55">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0340" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0341" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0342" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0343" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC256" frame="18FCC256" pgn="FCC2" priority="18" source="56">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0344" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0345" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0346" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0347" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC257" frame="18FCC257" pgn="FCC2" priority="18" source="57">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0348" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0349" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0350" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0351" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC258" frame="18FCC258" pgn="FCC2" priority="18" source="58">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0352" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0353" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0354" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0355" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC259" frame="18FCC259" pgn="FCC2" priority="18" source="59">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0356" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0357" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0358" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0359" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC25A" frame="18FCC25A" pgn="FCC2" priority="18" source="5A">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0360" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0361" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0362" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0363" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC25B" frame="18FCC25B" pgn="FCC2" priority="18" source="5B">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0364" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0365" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0366" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0367" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC25C" frame="18FCC25C" pgn="FCC2" priority="18" source="5C">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0368" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0369" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0370" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0371" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC25D" frame="18FCC25D" pgn="FCC2" priority="18" source="5D">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0372" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0373" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0374" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0375" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC25E" frame="18FCC25E" pgn="FCC2" priority="18" source="5E">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0376" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0377" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0378" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0379" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC25F" frame="18FCC25F" pgn="FCC2" priority="18" source="5F">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0380" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0381" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0382" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0383" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC260" frame="18FCC260" pgn="FCC2" priority="18" source="60">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0384" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0385" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0386" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0387" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC261" frame="18FCC261" pgn="FCC2" priority="18" source="61">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0388" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0389" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0390" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0391" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC262" frame="18FCC262" pgn="FCC2" priority="18" source="62">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0392" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0393" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0394" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0395" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC263" frame="18FCC263" pgn="FCC2" priority="18" source="63">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0396" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0397" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0398" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0399" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC264" frame="18FCC264" pgn="FCC2" priority="18" source="64">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0400" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0401" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0402" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0403" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC265" frame="18FCC265" pgn="FCC2" priority="18" source="65">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0404" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0405" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0406" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0407" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC266" frame="18FCC266" pgn="FCC2" priority="18" source="66">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0408" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0409" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0410" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0411" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC267" frame="18FCC267" pgn="FCC2" priority="18" source="67">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0412" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0413" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0414" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0415" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC268" frame="18FCC268" pgn="FCC2" priority="18" source="68">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0416" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0417" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0418" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0419" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC269" frame="18FCC269" pgn="FCC2" priority="18" source="69">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0420" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0421" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0422" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0423" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC26A" frame="18FCC26A" pgn="FCC2" priority="18" source="6A">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0424" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0425" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0426" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0427" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC26B" frame="18FCC26B" pgn="FCC2" priority="18" source="6B">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0428" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0429" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0430" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0431" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC26C" frame="18FCC26C" pgn="FCC2" priority="18" source="6C">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0432" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0433" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0434" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0435" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC26D" frame="18FCC26D" pgn="FCC2" priority="18" source="6D">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0436" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0437" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0438" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0439" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC26E" frame="18FCC26E" pgn="FCC2" priority="18" source="6E">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0440" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0441" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0442" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0443" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC26F" frame="18FCC26F" pgn="FCC2" priority="18" source="6F">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0444" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0445" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0446" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0447" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC270" frame="18FCC270" pgn="FCC2" priority="18" source="70">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0448" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0449" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0450" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0451" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC271" frame="18FCC271" pgn="FCC2" priority="18" source="71">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0452" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0453" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0454" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0455" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC272" frame="18FCC272" pgn="FCC2" priority="18" source="72">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0456" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0457" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0458" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0459" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC273" frame="18FCC273" pgn="FCC2" priority="18" source="73">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0460" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0461" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0462" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0463" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC274" frame="18FCC274" pgn="FCC2" priority="18" source="74">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0464" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0465" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0466" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0467" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC275" frame="18FCC275" pgn="FCC2" priority="18" source="75">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0468" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0469" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0470" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0471" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC276" frame="18FCC276" pgn="FCC2" priority="18" source="76">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0472" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0473" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0474" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0475" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC277" frame="18FCC277" pgn="FCC2" priority="18" source="77">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0476" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0477" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0478" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0479" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC278" frame="18FCC278" pgn="FCC2" priority="18" source="78">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0480" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0481" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0482" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0483" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC279" frame="18FCC279" pgn="FCC2" priority="18" source="79">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0484" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0485" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0486" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0487" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC27A" frame="18FCC27A" pgn="FCC2" priority="18" source="7A">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0488" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0489" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0490" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0491" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC27B" frame="18FCC27B" pgn="FCC2" priority="18" source="7B">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0492" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0493" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0494" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0495" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC27C" frame="18FCC27C" pgn="FCC2" priority="18" source="7C">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0496" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0497" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0498" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0499" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC27D" frame="18FCC27D" pgn="FCC2" priority="18" source="7D">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0500" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0501" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0502" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0503" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC27E" frame="18FCC27E" pgn="FCC2" priority="18" source="7E">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0504" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0505" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0506" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0507" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC27F" frame="18FCC27F" pgn="FCC2" priority="18" source="7F">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0508" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0509" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0510" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0511" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC280" frame="18FCC280" pgn="FCC2" priority="18" source="80">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0512" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0513" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0514" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0515" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC281" frame="18FCC281" pgn="FCC2" priority="18" source="81">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0516" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0517" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0518" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0519" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC282" frame="18FCC282" pgn="FCC2" priority="18" source="82">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0520" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0521" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0522" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0523" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC283" frame="18FCC283" pgn="FCC2" priority="18" source="83">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0524" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0525" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0526" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0527" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC284" frame="18FCC284" pgn="FCC2" priority="18" source="84">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0528" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0529" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0530" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0531" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC285" frame="18FCC285" pgn="FCC2" priority="18" source="85">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0532" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0533" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0534" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0535" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC286" frame="18FCC286" pgn="FCC2" priority="18" source="86">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0536" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0537" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0538" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0539" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC287" frame="18FCC287" pgn="FCC2" priority="18" source="87">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0540" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0541" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0542" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0543" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC288" frame="18FCC288" pgn="FCC2" priority="18" source="88">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0544" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0545" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0546" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0547" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC289" frame="18FCC289" pgn="FCC2" priority="18" source="89">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0548" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0549" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0550" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0551" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC28A" frame="18FCC28A" pgn="FCC2" priority="18" source="8A">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0552" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0553" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0554" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0555" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC28B" frame="18FCC28B" pgn="FCC2" priority="18" source="8B">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0556" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0557" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0558" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0559" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC28C" frame="18FCC28C" pgn="FCC2" priority="18" source="8C">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0560" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0561" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0562" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0563" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC28D" frame="18FCC28D" pgn="FCC2" priority="18" source="8D">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0564" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0565" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0566" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0567" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC28E" frame="18FCC28E" pgn="FCC2" priority="18" source="8E">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0568" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0569" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0570" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0571" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC28F" frame="18FCC28F" pgn="FCC2" priority="18" source="8F">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0572" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0573" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0574" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0575" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC290" frame="18FCC290" pgn="FCC2" priority="18" source="90">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0576" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0577" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0578" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0579" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC291" frame="18FCC291" pgn="FCC2" priority="18" source="91">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0580" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0581" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0582" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0583" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC292" frame="18FCC292" pgn="FCC2" priority="18" source="92">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0584" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0585" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0586" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0587" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC293" frame="18FCC293" pgn="FCC2" priority="18" source="93">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0588" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0589" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0590" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0591" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC294" frame="18FCC294" pgn="FCC2" priority="18" source="94">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0592" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0593" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0594" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0595" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC295" frame="18FCC295" pgn="FCC2" priority="18" source="95">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0596" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0597" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0598" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0599" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC296" frame="18FCC296" pgn="FCC2" priority="18" source="96">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0600" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0601" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0602" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0603" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC297" frame="18FCC297" pgn="FCC2" priority="18" source="97">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0604" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0605" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0606" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0607" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC298" frame="18FCC298" pgn="FCC2" priority="18" source="98">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0608" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0609" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0610" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0611" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC299" frame="18FCC299" pgn="FCC2" priority="18" source="99">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0612" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0613" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0614" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0615" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC29A" frame="18FCC29A" pgn="FCC2" priority="18" source="9A">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0616" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0617" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0618" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0619" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC29B" frame="18FCC29B" pgn="FCC2" priority="18" source="9B">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0620" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0621" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0622" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0623" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC29C" frame="18FCC29C" pgn="FCC2" priority="18" source="9C">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0624" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0625" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0626" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0627" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC29D" frame="18FCC29D" pgn="FCC2" priority="18" source="9D">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0628" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0629" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0630" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0631" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC29E" frame="18FCC29E" pgn="FCC2" priority="18" source="9E">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0632" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0633" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0634" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0635" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC29F" frame="18FCC29F" pgn="FCC2" priority="18" source="9F">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0636" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0637" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0638" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0639" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2A0" frame="18FCC2A0" pgn="FCC2" priority="18" source="A0">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0640" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0641" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0642" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0643" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2A1" frame="18FCC2A1" pgn="FCC2" priority="18" source="A1">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0644" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0645" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0646" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0647" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2A2" frame="18FCC2A2" pgn="FCC2" priority="18" source="A2">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0648" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0649" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0650" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0651" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2A3" frame="18FCC2A3" pgn="FCC2" priority="18" source="A3">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0652" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0653" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0654" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0655" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2A4" frame="18FCC2A4" pgn="FCC2" priority="18" source="A4">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0656" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0657" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0658" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0659" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2A5" frame="18FCC2A5" pgn="FCC2" priority="18" source="A5">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0660" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0661" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0662" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0663" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2A6" frame="18FCC2A6" pgn="FCC2" priority="18" source="A6">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0664" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0665" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0666" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0667" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2A7" frame="18FCC2A7" pgn="FCC2" priority="18" source="A7">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0668" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0669" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0670" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0671" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2A8" frame="18FCC2A8" pgn="FCC2" priority="18" source="A8">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0672" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0673" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0674" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0675" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2A9" frame="18FCC2A9" pgn="FCC2" priority="18" source="A9">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0676" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0677" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0678" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0679" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2AA" frame="18FCC2AA" pgn="FCC2" priority="18" source="AA">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0680" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0681" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0682" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0683" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2AB" frame="18FCC2AB" pgn="FCC2" priority="18" source="AB">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0684" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0685" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0686" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0687" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2AC" frame="18FCC2AC" pgn="FCC2" priority="18" source="AC">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0688" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0689" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0690" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0691" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2AD" frame="18FCC2AD" pgn="FCC2" priority="18" source="AD">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0692" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0693" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0694" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0695" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2AE" frame="18FCC2AE" pgn="FCC2" priority="18" source="AE">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0696" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0697" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0698" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0699" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2AF" frame="18FCC2AF" pgn="FCC2" priority="18" source="AF">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0700" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0701" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0702" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0703" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2B0" frame="18FCC2B0" pgn="FCC2" priority="18" source="B0">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0704" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0705" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0706" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0707" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2B1" frame="18FCC2B1" pgn="FCC2" priority="18" source="B1">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0708" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0709" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0710" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0711" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2B2" frame="18FCC2B2" pgn="FCC2" priority="18" source="B2">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0712" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0713" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0714" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0715" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2B3" frame="18FCC2B3" pgn="FCC2" priority="18" source="B3">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0716" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0717" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0718" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0719" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2B4" frame="18FCC2B4" pgn="FCC2" priority="18" source="B4">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0720" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0721" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0722" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0723" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2B5" frame="18FCC2B5" pgn="FCC2" priority="18" source="B5">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0724" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0725" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0726" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0727" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2B6" frame="18FCC2B6" pgn="FCC2" priority="18" source="B6">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0728" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0729" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0730" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0731" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2B7" frame="18FCC2B7" pgn="FCC2" priority="18" source="B7">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0732" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0733" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0734" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0735" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2B8" frame="18FCC2B8" pgn="FCC2" priority="18" source="B8">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0736" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0737" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0738" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0739" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2B9" frame="18FCC2B9" pgn="FCC2" priority="18" source="B9">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0740" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0741" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0742" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0743" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2BA" frame="18FCC2BA" pgn="FCC2" priority="18" source="BA">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0744" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0745" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0746" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0747" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2BB" frame="18FCC2BB" pgn="FCC2" priority="18" source="BB">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0748" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0749" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0750" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0751" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2BC" frame="18FCC2BC" pgn="FCC2" priority="18" source="BC">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0752" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0753" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0754" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0755" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2BD" frame="18FCC2BD" pgn="FCC2" priority="18" source="BD">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0756" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0757" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0758" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0759" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2BE" frame="18FCC2BE" pgn="FCC2" priority="18" source="BE">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0760" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0761" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0762" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0763" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2BF" frame="18FCC2BF" pgn="FCC2" priority="18" source="BF">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0764" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0765" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0766" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0767" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2C0" frame="18FCC2C0" pgn="FCC2" priority="18" source="C0">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0768" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0769" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0770" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0771" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2C1" frame="18FCC2C1" pgn="FCC2" priority="18" source="C1">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0772" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0773" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0774" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0775" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2C2" frame="18FCC2C2" pgn="FCC2" priority="18" source="C2">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0776" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0777" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0778" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0779" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2C3" frame="18FCC2C3" pgn="FCC2" priority="18" source="C3">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0780" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0781" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0782" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0783" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2C4" frame="18FCC2C4" pgn="FCC2" priority="18" source="C4">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0784" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0785" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0786" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0787" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2C5" frame="18FCC2C5" pgn="FCC2" priority="18" source="C5">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0788" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0789" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0790" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0791" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2C6" frame="18FCC2C6" pgn="FCC2" priority="18" source="C6">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0792" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0793" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0794" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0795" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2C7" frame="18FCC2C7" pgn="FCC2" priority="18" source="C7">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0796" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0797" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0798" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0799" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2C8" frame="18FCC2C8" pgn="FCC2" priority="18" source="C8">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0800" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0801" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0802" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0803" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2C9" frame="18FCC2C9" pgn="FCC2" priority="18" source="C9">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0804" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0805" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0806" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0807" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2CA" frame="18FCC2CA" pgn="FCC2" priority="18" source="CA">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0808" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0809" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0810" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0811" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2CB" frame="18FCC2CB" pgn="FCC2" priority="18" source="CB">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0812" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0813" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0814" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0815" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2CC" frame="18FCC2CC" pgn="FCC2" priority="18" source="CC">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0816" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0817" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0818" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0819" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2CD" frame="18FCC2CD" pgn="FCC2" priority="18" source="CD">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0820" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0821" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0822" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0823" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2CE" frame="18FCC2CE" pgn="FCC2" priority="18" source="CE">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0824" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0825" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0826" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0827" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2CF" frame="18FCC2CF" pgn="FCC2" priority="18" source="CF">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0828" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0829" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0830" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0831" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2D0" frame="18FCC2D0" pgn="FCC2" priority="18" source="D0">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0832" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0833" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0834" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0835" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2D1" frame="18FCC2D1" pgn="FCC2" priority="18" source="D1">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0836" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0837" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0838" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0839" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2D2" frame="18FCC2D2" pgn="FCC2" priority="18" source="D2">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0840" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0841" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0842" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0843" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2D3" frame="18FCC2D3" pgn="FCC2" priority="18" source="D3">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0844" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0845" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0846" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0847" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2D4" frame="18FCC2D4" pgn="FCC2" priority="18" source="D4">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0848" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0849" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0850" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0851" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2D5" frame="18FCC2D5" pgn="FCC2" priority="18" source="D5">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0852" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0853" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0854" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0855" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2D6" frame="18FCC2D6" pgn="FCC2" priority="18" source="D6">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0856" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0857" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0858" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0859" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2D7" frame="18FCC2D7" pgn="FCC2" priority="18" source="D7">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0860" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0861" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0862" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0863" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2D8" frame="18FCC2D8" pgn="FCC2" priority="18" source="D8">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0864" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0865" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0866" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0867" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2D9" frame="18FCC2D9" pgn="FCC2" priority="18" source="D9">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0868" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0869" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0870" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0871" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2DA" frame="18FCC2DA" pgn="FCC2" priority="18" source="DA">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0872" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0873" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0874" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0875" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2DB" frame="18FCC2DB" pgn="FCC2" priority="18" source="DB">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0876" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0877" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0878" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0879" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2DC" frame="18FCC2DC" pgn="FCC2" priority="18" source="DC">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0880" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0881" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0882" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0883" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2DD" frame="18FCC2DD" pgn="FCC2" priority="18" source="DD">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0884" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0885" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0886" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0887" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2DE" frame="18FCC2DE" pgn="FCC2" priority="18" source="DE">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0888" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0889" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0890" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0891" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2DF" frame="18FCC2DF" pgn="FCC2" priority="18" source="DF">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0892" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0893" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0894" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0895" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2E0" frame="18FCC2E0" pgn="FCC2" priority="18" source="E0">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0896" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0897" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0898" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0899" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2E1" frame="18FCC2E1" pgn="FCC2" priority="18" source="E1">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0900" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0901" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0902" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0903" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2E2" frame="18FCC2E2" pgn="FCC2" priority="18" source="E2">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0904" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0905" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0906" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0907" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2E3" frame="18FCC2E3" pgn="FCC2" priority="18" source="E3">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0908" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0909" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0910" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0911" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2E4" frame="18FCC2E4" pgn="FCC2" priority="18" source="E4">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0912" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0913" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0914" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0915" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2E5" frame="18FCC2E5" pgn="FCC2" priority="18" source="E5">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0916" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0917" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0918" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0919" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2E6" frame="18FCC2E6" pgn="FCC2" priority="18" source="E6">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0920" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0921" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0922" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0923" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2E7" frame="18FCC2E7" pgn="FCC2" priority="18" source="E7">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0924" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0925" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0926" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0927" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2E8" frame="18FCC2E8" pgn="FCC2" priority="18" source="E8">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0928" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0929" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0930" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0931" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2E9" frame="18FCC2E9" pgn="FCC2" priority="18" source="E9">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0932" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0933" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0934" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0935" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2EA" frame="18FCC2EA" pgn="FCC2" priority="18" source="EA">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0936" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0937" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0938" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0939" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2EB" frame="18FCC2EB" pgn="FCC2" priority="18" source="EB">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0940" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0941" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0942" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0943" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2EC" frame="18FCC2EC" pgn="FCC2" priority="18" source="EC">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0944" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0945" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0946" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0947" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2ED" frame="18FCC2ED" pgn="FCC2" priority="18" source="ED">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0948" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0949" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0950" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0951" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2EE" frame="18FCC2EE" pgn="FCC2" priority="18" source="EE">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0952" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0953" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0954" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0955" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2EF" frame="18FCC2EF" pgn="FCC2" priority="18" source="EF">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0956" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0957" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0958" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0959" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2F0" frame="18FCC2F0" pgn="FCC2" priority="18" source="F0">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0960" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0961" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0962" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0963" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2F1" frame="18FCC2F1" pgn="FCC2" priority="18" source="F1">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0964" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0965" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0966" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0967" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2F2" frame="18FCC2F2" pgn="FCC2" priority="18" source="F2">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0968" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0969" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0970" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0971" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2F3" frame="18FCC2F3" pgn="FCC2" priority="18" source="F3">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0972" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0973" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0974" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0975" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2F4" frame="18FCC2F4" pgn="FCC2" priority="18" source="F4">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0976" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0977" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0978" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0979" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2F5" frame="18FCC2F5" pgn="FCC2" priority="18" source="F5">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0980" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0981" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0982" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0983" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2F6" frame="18FCC2F6" pgn="FCC2" priority="18" source="F6">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0984" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0985" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0986" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0987" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2F7" frame="18FCC2F7" pgn="FCC2" priority="18" source="F7">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0988" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0989" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0990" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0991" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2F8" frame="18FCC2F8" pgn="FCC2" priority="18" source="F8">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0992" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0993" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0994" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0995" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2F9" frame="18FCC2F9" pgn="FCC2" priority="18" source="F9">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_0996" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_0997" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_0998" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_0999" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2FA" frame="18FCC2FA" pgn="FCC2" priority="18" source="FA">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_1000" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_1001" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_1002" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_1003" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2FB" frame="18FCC2FB" pgn="FCC2" priority="18" source="FB">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_1004" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_1005" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_1006" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_1007" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2FC" frame="18FCC2FC" pgn="FCC2" priority="18" source="FC">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_1008" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_1009" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_1010" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_1011" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2FD" frame="18FCC2FD" pgn="FCC2" priority="18" source="FD">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_1012" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_1013" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_1014" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_1015" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2FE" frame="18FCC2FE" pgn="FCC2" priority="18" source="FE">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_1016" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_1017" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_1018" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_1019" length="16"/>
+    </IDENTIFIER>
+
+    <IDENTIFIER description="muestras de consumo p2 m1, CAN bus frame 0x18FCC2FF" frame="18FCC2FF" pgn="FCC2" priority="18" source="FF">
+      <PARAMETER bit="1" byte="1" key="Consumo_m1_1020" length="16"/>
+      <PARAMETER bit="1" byte="3" key="Consumo_m1_1021" length="16"/>
+      <PARAMETER bit="1" byte="5" key="Consumo_m1_1022" length="16"/>
+      <PARAMETER bit="1" byte="7" key="Consumo_m1_1023" length="16"/>
+    </IDENTIFIER>
+    <!-- END muestras p2 m1 -->
+    <IDENTIFIER frame="18FCA20F" pgn="FCA2" priority="18" source="0F">
+      <PARAMETER bit="1" byte="1" key="ORIGEN_MANIOBRA" length="16" description="Origen maniobra"/>
+      <PARAMETER bit="1" byte="3" key="TIEMPO_CAMBIO_S_H_M1" length="16" description="Tiempo cambio de tramo A a V (SELBA) / A a H (JEMA) al abrir/cerrar motor 1 [ms] "/>
+      <PARAMETER bit="1" byte="5" key="PULSOS_CAMBIO_S_H_M1" length="16" description="Pulsos en cambio de tramo A a V (SELBA) / A a H (JEMA) al abrir/cerrar motor 1 [ms] "/>
+      <PARAMETER bit="1" byte="7" key="TIEMPO_CAMBIO_H_L_M1" length="16" description="Tiempo cambio de tramo V a L (SELBA) / H a L (JEMA) al abrir/cerrar motor 1 [ms] "/>
+    </IDENTIFIER>
+    <IDENTIFIER frame="18FCA210" pgn="FCA2" priority="18" source="10">
+      <PARAMETER bit="1" byte="1" key="PULSOS_CAMBIO_H_L_M1" length="16" description="Pulsos cambio de tramo V a L (SELBA) / H a L (JEMA) al abrir/cerrar motor 1 [ms] "/>
+      <PARAMETER bit="1" byte="3" key="TIEMPO_CAMBIO_L_P_M1" length="16" description="Tiempo cambio de tramo L a F (SELBA) / L a P (JEMA) al abrir/cerrar motor 1 [ms] "/>
+      <PARAMETER bit="1" byte="5" key="PULSOS_CAMBIO_L_P_M1" length="16" description="Pulsos cambio de tramo L a F (SELBA) / L a P (JEMA) al abrir/cerrar motor 1 [ms] "/>
+      <PARAMETER bit="1" byte="7" key="TIEMPO_CAMBIO_S_H_M2" length="16" description="Tiempo cambio de tramo A a V (SELBA) / A a H (JEMA) al abrir/cerrar motor 2 [ms] "/>
+    </IDENTIFIER>
+    <IDENTIFIER frame="18FCA211" pgn="FCA2" priority="18" source="11">
+      <PARAMETER bit="1" byte="1" key="PULSOS_CAMBIO_S_H_M2" length="16" description="Pulsos en cambio de tramo A a V (SELBA) / A a H (JEMA) al abrir/cerrar motor 2 [ms] "/>
+      <PARAMETER bit="1" byte="3" key="TIEMPO_CAMBIO_H_L_M2" length="16" description="Tiempo cambio de tramo V a L (SELBA) / H a L (JEMA) al abrir/cerrar motor 2 [ms] "/>
+      <PARAMETER bit="1" byte="5" key="PULSOS_CAMBIO_H_L_M2" length="16" description="Pulsos cambio de tramo V a L (SELBA) / H a L (JEMA) al abrir/cerrar motor 2 [ms] "/>
+      <PARAMETER bit="1" byte="7" key="TIEMPO_CAMBIO_L_P_M2" length="16" description="Tiempo cambio de tramo L a F (SELBA) / L a P (JEMA) al abrir/cerrar motor 2 [ms] "/>
+    </IDENTIFIER>
+    <IDENTIFIER frame="18FCA212" pgn="FCA2" priority="18" source="12">
+      <PARAMETER bit="1" byte="1" key="PULSOS_CAMBIO_L_P_M2" length="16" description="Pulsos cambio de tramo L a F (SELBA) / L a P (JEMA) al abrir/cerrar motor 2 [ms] "/>
+	  <PARAMETER bit="1" byte="4" key="REVISION_SOFTWARE" length="16" description="Version de SW"/>
+	  <PARAMETER bit="1" byte="5" key="REVISION_HARDWARE" length="8" description="Version de HW"/>
+	  <PARAMETER bit="1" byte="6" key="VERSION_CPC" length="16" description="Version archivo configuracion caja de control"/>	  
+    </IDENTIFIER>
+	<IDENTIFIER frame="18FCA213" pgn="FCA2" priority="18" source="13">
+      <PARAMETER bit="1" byte="1" key="NUMERO DE MANIOBRAS M2" length="24" description="Numero de maniobras del motor 2"/>
+    </IDENTIFIER>
+</FMS_STRUCTURE>
